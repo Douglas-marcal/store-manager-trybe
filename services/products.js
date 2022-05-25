@@ -4,8 +4,8 @@ function getAllProducts() {
   return productsModel.getAllProducts();
 }
 
-function getProductById() {
-  return productsModel.getProductById();
+function getProductById(id) {
+  return productsModel.getProductById(id);
 }
 
 module.exports = {
