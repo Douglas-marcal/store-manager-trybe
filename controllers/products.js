@@ -18,7 +18,16 @@ async function getProductById(request, response) {
   response.status(CODE.OK).json(product);
 }
 
+async function registerProduct(request, response) {
+  const { body } = request;
+
+  const registeredProduct = await productsService.registerProduct(...body);
+
+  response.status(CODE.CREATED).json(registeredProduct);
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
+  registerProduct,
 };
