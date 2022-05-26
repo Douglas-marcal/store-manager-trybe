@@ -1,4 +1,6 @@
 const express = require('express');
+const { CODE } = require('../constants/httpStatus');
+const { MESSAGE } = require('../constants/messages');
 const { getAllProducts, getProductById } = require('../services/products');
 
 const routes = express.Router();
@@ -6,7 +8,7 @@ const routes = express.Router();
 routes.get('/', async (_request, response) => {
   const [products] = await getAllProducts();
 
-  response.status(200).json(products);
+  response.status(CODE.OK).json(products);
 });
 
 routes.get('/:id', async (request, response) => {
@@ -14,9 +16,9 @@ routes.get('/:id', async (request, response) => {
 
   const [[product]] = await getProductById(id);
 
-  if (!product) return response.status(404).json({ message: 'Product not found' });
+  if (!product) return response.status(CODE.NOT_FOUND).json(MESSAGE.PRODUCT_NOT_FOUND);
 
-  response.status(200).json(product);
+  response.status(CODE.OK).json(product);
 });
 
 module.exports = routes;

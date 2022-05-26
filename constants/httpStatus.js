@@ -4,4 +4,4 @@ const STATUS_CODE = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-module.exports = { STATUS_CODE };
+module.exports = { CODE: STATUS_CODE };
