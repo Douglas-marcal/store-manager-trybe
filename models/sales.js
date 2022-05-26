@@ -11,7 +11,7 @@ function getAllSales() {
 
 function getSaleById(id) {
   const SELECT = 'SELECT sales.`date`, product_id, quantity FROM sales_products ';
-  const INNER_JOIN = 'INNER JOIN sales ON sales_products.sale_id = sales.id';
+  const INNER_JOIN = 'INNER JOIN sales ON sales_products.sale_id = sales.id ';
   const WHERE = 'WHERE sale_id = ?;';
 
   const QUERY = SELECT + INNER_JOIN + WHERE;
