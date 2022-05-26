@@ -1,4 +1,3 @@
-const { MESSAGE } = require('../constants/messages');
 const productsModel = require('../models/products');
 
 function getProducts(id = null) {
@@ -13,7 +12,7 @@ async function registerProduct(product) {
   const [products] = await productsModel.getAllProducts();
   const alreadyExistsProduct = products.some((productDatabase) => name === productDatabase.name);
 
-  if (alreadyExistsProduct) throw MESSAGE.ALREADY_EXISTS;
+  if (alreadyExistsProduct) return null;
 
   const { id } = await productsModel.registerProduct(product);
 

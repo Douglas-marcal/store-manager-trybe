@@ -21,7 +21,9 @@ async function getProductById(request, response) {
 async function registerProduct(request, response) {
   const { body } = request;
 
-  const registeredProduct = await productsService.registerProduct(...body);
+  const registeredProduct = await productsService.registerProduct(body);
+
+  if (!registeredProduct) return response.status(CODE.CONFLICT).json(MESSAGE.ALREADY_EXISTS);
 
   response.status(CODE.CREATED).json(registeredProduct);
 }
