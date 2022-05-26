@@ -2,13 +2,13 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const { getAllProducts, getProductById } = require('../../../models/products');
 const database = require('../../../database');
-const mockProducts = require('./mock/mockDatabaseProducts');
-const mockProductById = require('./mock/mockDatabaseProductById');
+const mockAllProducts = require('./mock/productsDatabase/allProducts');
+const mockProductById = require('./mock/productsDatabase/productById');
 
 describe('model tests', () => {
   describe('function getAllProducts', () => {
     before(() => {
-      sinon.stub(database, 'execute').resolves(mockProducts);
+      sinon.stub(database, 'execute').resolves(mockAllProducts);
     });
 
     after(() => {
@@ -30,7 +30,10 @@ describe('model tests', () => {
     it('products has keys "id", "name", "quantity"', async () => {
       const [products] = await getAllProducts();
 
-      expect(products[0]).to.contains.keys("id", "name", "quantity");
+      products.forEach(product => {
+        expect(product).to.contains.keys("id", "name", "quantity");
+      });
+
     });
   });
 
