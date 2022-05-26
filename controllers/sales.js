@@ -1,9 +1,9 @@
 const { CODE } = require('../constants/httpStatus');
 const { MESSAGE } = require('../constants/messages');
-const { getSales } = require('../services/sales');
+const salesService = require('../services/sales');
 
-async function getAllSales(request, response) {
-  const sales = await getSales();
+async function getAllSales(_request, response) {
+  const sales = await salesService.getSales();
   
   response.status(CODE.OK).json(sales);
 }
@@ -11,7 +11,7 @@ async function getAllSales(request, response) {
 async function getSaleById(request, response) {
   const { id } = request.params;
   
-  const sale = await getSales(id);
+  const sale = await salesService.getSales(id);
   
   if (sale.length === 0) return response.status(CODE.NOT_FOUND).json(MESSAGE.SALE_NOT_FOUND);
   

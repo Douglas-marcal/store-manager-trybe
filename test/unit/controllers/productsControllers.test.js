@@ -20,7 +20,7 @@ describe('products controller tests', () => {
       productsService.getProducts.restore();
     });
 
-    it('returns status 200', async () => {
+    it('should return status 200', async () => {
       await productsController.getAllProducts(request, response);
 
       const result = response.status.calledWith(200)
@@ -28,7 +28,7 @@ describe('products controller tests', () => {
       expect(result).to.be.true;
     });
 
-    it('returns json with an array', async () => {
+    it('should return json with an array', async () => {
       await productsController.getAllProducts(request, response);
 
       const result = response.json.calledWith(sinon.match.array);
@@ -51,7 +51,7 @@ describe('products controller tests', () => {
       productsService.getProducts.restore();
     });
     
-    it('returns status 200', async () => {
+    it('should return status 200', async () => {
       request.params = { id: 2 };
 
       await productsController.getProductById(request, response);
@@ -61,7 +61,7 @@ describe('products controller tests', () => {
       expect(result).to.be.true;
     });
 
-    it('returns json with an object', async () => {
+    it('should return json with an object', async () => {
       request.params = { id: 2 };
 
       await productsController.getProductById(request, response);
@@ -87,7 +87,7 @@ describe('products controller tests', () => {
       productsService.getProducts.restore();
     });
 
-    it('returns status 404', async () => {
+    it('should return status 404', async () => {
       request.params = { id: 52 };
 
       await productsController.getProductById(request, response);
@@ -98,13 +98,12 @@ describe('products controller tests', () => {
       expect(result).to.be.true;
     });
 
-    it('returns message not found', async () => {
+    it('should return message not found', async () => {
       request.params = { id: 52 };
 
       await productsController.getProductById(request, response);
 
       const result = response.json.calledWith(sinon.match.object);
-
 
       expect(result).to.be.true;
     });
