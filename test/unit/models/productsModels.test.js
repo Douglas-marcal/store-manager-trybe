@@ -5,7 +5,7 @@ const database = require('../../../database');
 const mockAllProducts = require('./mock/productsDatabase/allProducts');
 const mockProductById = require('./mock/productsDatabase/productById');
 
-describe('model tests', () => {
+describe('products model tests', () => {
   describe('function getAllProducts', () => {
     before(() => {
       sinon.stub(database, 'execute').resolves(mockAllProducts);
