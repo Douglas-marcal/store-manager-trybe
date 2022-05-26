@@ -25,6 +25,10 @@ const MESSAGE = {
     status: CODE.UNPROCESSABLE_ENTITY,
     message: '"quantity" must be greater than or equal to 1',
   },
+  ALREADY_EXISTS: {
+    status: CODE.CONFLICT,
+    message: 'Product already exists',
+  },
 };
 
 module.exports = { MESSAGE };
