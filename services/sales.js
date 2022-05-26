@@ -3,7 +3,7 @@ const { allSalesToCamelCase, saleByIdToCamelCase } = require('./utils/salesUtils
 
 async function getSales(id = null) {
   if (id) {
-    const [sales] = await salesModel.getSaleById();
+    const [sales] = await salesModel.getSaleById(id);
 
     const saleById = sales.map(saleByIdToCamelCase);
 
