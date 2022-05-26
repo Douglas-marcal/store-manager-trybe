@@ -1,14 +1,11 @@
 const productsModel = require('../models/products');
 
-function getAllProducts() {
+function getProducts(id = null) {
+  if (id) return productsModel.getProductById(id);
+
   return productsModel.getAllProducts();
 }
 
-function getProductById(id) {
-  return productsModel.getProductById(id);
-}
-
 module.exports = {
-  getAllProducts,
-  getProductById,
+  getProducts,
 };
