@@ -5,9 +5,11 @@ const errorHandling = require('../middlewares/errorHandling');
 
 const routes = express.Router();
 
-routes.use('/products', productsController);
+routes.get('/products', productsController.getAllProducts);
+routes.get('/products/:id', productsController.getProductById);
 
-routes.use('/sales', salesController);
+routes.get('/sales', salesController.getAllSales);
+routes.get('/sales/:id', salesController.getSaleById);
 
 routes.use(errorHandling);
 
