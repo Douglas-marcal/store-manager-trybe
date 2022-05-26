@@ -11,10 +11,9 @@ async function getSales(id = null) {
   }
 
   const [sales] = await salesModel.getAllSales();
-
   const allSales = sales.map(allSalesToCamelCase);
 
   return allSales;
 }
 
-module.exports = getSales;
+module.exports = { getSales };

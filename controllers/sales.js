@@ -1,7 +1,7 @@
 const express = require('express');
 const { CODE } = require('../constants/httpStatus');
 const { MESSAGE } = require('../constants/messages');
-const getSales = require('../services/sales');
+const { getSales } = require('../services/sales');
 
 const routes = express.Router();
 
