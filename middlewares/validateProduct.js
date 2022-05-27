@@ -8,7 +8,7 @@ function validateProduct(request, _response, next) {
 
   if (name.length < MIN_CHARACTERS) throw MESSAGE.NAME_TOO_SHORT;
 
-  if (!quantity) throw MESSAGE.QUANTITY_REQUIRED;
+  if (quantity === undefined) throw MESSAGE.QUANTITY_REQUIRED;
 
   if (quantity < MIN_QUANTITY) throw MESSAGE.LOW_QUANTITY;
 
