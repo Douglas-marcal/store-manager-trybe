@@ -10,9 +10,9 @@ async function registerProduct(product) {
   const { name, quantity } = product;
 
   const [products] = await productsModel.getAllProducts();
-  const alreadyExistsProduct = products.some((productDatabase) => name === productDatabase.name);
+  const productAlreadyExists = products.some((productDatabase) => name === productDatabase.name);
 
-  if (alreadyExistsProduct) return null;
+  if (productAlreadyExists) return null;
 
   const { id } = await productsModel.registerProduct(product);
 
