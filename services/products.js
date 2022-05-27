@@ -21,7 +21,12 @@ async function registerProduct(product) {
   return newProduct;
 }
 
+function updateProduct(id, product) {
+  return productsModel.updateProduct(id, product);
+}
+
 module.exports = {
   getProducts,
   registerProduct,
+  updateProduct,
 };
