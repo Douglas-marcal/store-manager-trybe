@@ -7,11 +7,7 @@ async function registerSalesProducts(sale) {
 
   await database.execute(QUERY, [id, productId, quantity]);
 
-  return {
-    id,
-    productId,
-    quantity,
-  };
+  return { ...sale };
 }
 
 module.exports = {
