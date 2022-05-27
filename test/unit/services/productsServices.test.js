@@ -132,8 +132,9 @@ describe('products services tests', () => {
       productsModel.getAllProducts.restore();
     });
 
-    it('should return an object containing "id", name and quantity', async () => {
+    it('should return an object containing "id", "name" and "quantity"', async () => {
       sinon.stub(productsModel, 'registerProduct').resolves(mockModel);
+      sinon.stub(productsModel, 'getAllProducts').resolves(mockAllProducts);
 
       const result = await productsService.registerProduct(mockParameter);
 
@@ -141,6 +142,7 @@ describe('products services tests', () => {
       expect(result).to.be.deep.equal(mockModel);
 
       productsModel.registerProduct.restore();
+      productsModel.getAllProducts.restore();
     });
   });
 });
