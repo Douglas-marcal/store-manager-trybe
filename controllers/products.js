@@ -1,5 +1,5 @@
 const { CODE } = require('../constants/httpStatus');
-const { MESSAGE } = require('../constants/messages');
+const { MESSAGE, MESSAGE_NOT_FOUND } = require('../constants/messages');
 const productsService = require('../services/products');
 
 async function getAllProducts(_request, response) {
@@ -28,8 +28,23 @@ async function registerProduct(request, response) {
   response.status(CODE.CREATED).json(registeredProduct);
 }
 
+async function updateProduct(request, response) {
+  const { body, params: { id } } = request;
+
+  const productUpdated = await productsService.updateProduct(id, body);
+
+  if (!productUpdated) return response.status(CODE.NOT_FOUND).json(MESSAGE_NOT_FOUND);
+  
+  const { name, quantity } = body;
+
+  const message = { id, name, quantity };
+
+  response.status(CODE.OK).json(message);
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   registerProduct,
+  updateProduct,
 };
