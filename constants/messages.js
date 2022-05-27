@@ -31,4 +31,8 @@ const MESSAGE = {
   },
 };
 
-module.exports = { MESSAGE };
+const MESSAGE_NOT_FOUND = {
+  message: 'Product not found',
+};
+
+module.exports = { MESSAGE, MESSAGE_NOT_FOUND };
