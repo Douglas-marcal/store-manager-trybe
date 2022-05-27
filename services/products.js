@@ -25,8 +25,13 @@ function updateProduct(id, product) {
   return productsModel.updateProduct(id, product);
 }
 
+function deleteProduct(id) {
+  return productsModel.deleteProduct(id);
+}
+
 module.exports = {
   getProducts,
   registerProduct,
   updateProduct,
+  deleteProduct,
 };
