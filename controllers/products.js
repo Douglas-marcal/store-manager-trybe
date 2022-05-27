@@ -42,9 +42,20 @@ async function updateProduct(request, response) {
   response.status(CODE.OK).json(message);
 }
 
+async function deleteProduct(request, response) {
+  const { id } = request.params;
+
+  const productDeleted = await productsService.deleteProduct(id);
+
+  if (!productDeleted) return response.status(CODE.NOT_FOUND).json(MESSAGE_NOT_FOUND);
+
+  response.status(CODE.NO_CONTENT).end();
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   registerProduct,
   updateProduct,
+  deleteProduct,
 };
