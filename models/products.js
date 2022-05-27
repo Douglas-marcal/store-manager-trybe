@@ -24,8 +24,19 @@ async function registerProduct(product) {
   return response;
 }
 
+async function updateProduct(id, product) {
+  const { name, quantity } = product;
+
+  const QUERY = 'UPDATE products SET name = ?, quantity = ? WHERE id = ?;';
+
+  const [response] = await database.execute(QUERY, [name, quantity, id]);
+
+  return response.affectedRows;
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   registerProduct,
+  updateProduct,
 };
