@@ -4,6 +4,7 @@ const productsService = require("../../../services/products");
 const productsController = require('../../../controllers/products');
 const mockAllProducts = require('./mock/productsService/allProducts');
 const mockProductById = require('./mock/productsService/productById');
+const mockServiceReturn = require('./mock/productsService/registerProduct');
 
 describe('products controller tests', () => {
   describe('function getAllProducts', () => {
@@ -109,4 +110,78 @@ describe('products controller tests', () => {
     });
   });
 
+  describe('function registerProduct', () => {
+    const response = {};
+    const request = {};
+
+    beforeEach(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+      sinon.stub(productsService, 'registerProduct').resolves(mockServiceReturn);
+    });
+
+    afterEach(() => {
+      productsService.registerProduct.restore();
+    });
+
+    it('should return status 200', async () => {
+      request.body = { name: 'Chinelo Havaianas', quantity: 30 };
+
+      await productsController.registerProduct(request, response);
+
+      const result = response.status.calledWith(201);
+
+      expect(result).to.be.true;
+    });
+
+    it('should return json with an object', async () => {
+      request.body = { name: 'Chinelo Havaianas', quantity: 30 };
+
+      await productsController.registerProduct(request, response);
+
+      const result = response.json.calledWith(mockServiceReturn);
+
+      expect(result).to.be.true;
+    });
+  });
+
+  describe('function registerProduct: case already registered', () => {
+    const response = {};
+    const request = {};
+
+    beforeEach(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+      sinon.stub(productsService, 'registerProduct').resolves(null)
+    });
+
+    afterEach(() => {
+      productsService.registerProduct.restore();
+    });
+
+    it('should return status 409', async () => {
+      request.body = { name: 'Chinelo Havaianas', quantity: 30 };
+
+      await productsController.registerProduct(request, response);
+
+      const result = response.status.calledWith(409);
+
+      expect(result).to.be.true;
+    });
+
+    it('should return json with an object', async () => {
+      request.body = { name: 'Chinelo Havaianas', quantity: 30 };
+
+      const messageError = {
+        "status": 409,
+        "message": "Product already exists"
+      }
+
+      await productsController.registerProduct(request, response);
+
+      const result = response.json.calledWith(messageError);
+
+      expect(result).to.be.true;
+    });
+  });
 });
