@@ -29,6 +29,10 @@ const MESSAGE = {
     status: CODE.CONFLICT,
     message: 'Product already exists',
   },
+  PRODUCT_ID_REQUIRED: {
+    status: CODE.BAD_REQUEST,
+    message: '"productId" is required',
+  },
 };
 
 const MESSAGE_NOT_FOUND = {
