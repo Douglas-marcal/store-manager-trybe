@@ -19,7 +19,14 @@ function getSaleById(id) {
   return database.execute(QUERY, [id]);
 }
 
+function registerSale() {
+  const QUERY = 'INSERT INTO sales (`date`) VALUES (NOW());';
+
+  return database.execute(QUERY);
+}
+
 module.exports = {
   getAllSales,
   getSaleById,
+  registerSale,
 };
