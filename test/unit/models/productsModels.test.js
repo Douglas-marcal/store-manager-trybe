@@ -5,6 +5,14 @@ const database = require('../../../database');
 const mockAllProducts = require('./mock/productsDatabase/allProducts');
 const mockProductById = require('./mock/productsDatabase/productById');
 const mockDatabaseResponse = require('./mock/productsDatabase/registerProduct');
+const {
+  mockResponseDatabaseUpdated,
+  mockResponseDatabaseNotUpdated
+} = require('./mock/productsDatabase/updateProduct');
+const {
+  mockResponseDatabaseDeleted,
+  mockResponseDatabaseNotDeleted
+} = require('./mock/productsDatabase/deleteProduct');
 
 describe('products model tests', () => {
   describe('function getAllProducts', () => {
@@ -112,6 +120,56 @@ describe('products model tests', () => {
       };
 
       expect(result).to.be.deep.equal(responseDatabase);
+    });
+  });
+
+  describe('function updateProduct', () => {    
+    it('should return a number', async () => {
+      sinon.stub(database, 'execute').resolves(mockResponseDatabaseUpdated);
+      const product = {
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      };
+      
+      const result = await productsModel.updateProduct(3, product);
+      
+      expect(result).to.be.equal(1);
+      
+      database.execute.restore();
+    });
+    
+    it('should return zero if product does\'not exist', async () => {
+      sinon.stub(database, 'execute').resolves(mockResponseDatabaseNotUpdated);
+      const product = {
+        name: 'Chinelo Ipanema',
+        quantity: 30,
+      };
+      
+      const result = await productsModel.updateProduct(369, product);
+      
+      expect(result).to.be.equal(0);
+      
+      database.execute.restore();
+    });
+  });
+
+  describe('function deleteProduct', () => {
+    it('should return a number', async () => {
+      sinon.stub(database, 'execute').resolves(mockResponseDatabaseDeleted);
+      const result = await productsModel.deleteProduct(3);
+      
+      expect(result).to.be.equal(2);
+
+      database.execute.restore();
+    });
+
+    it('should return zero', async () => {
+      sinon.stub(database, 'execute').resolves(mockResponseDatabaseNotDeleted);
+      const result = await productsModel.deleteProduct(369);
+      
+      expect(result).to.be.equal(0);
+
+      database.execute.restore();
     });
   });
 });
