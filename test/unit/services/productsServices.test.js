@@ -4,6 +4,7 @@ const productsService = require("../../../services/products");
 const mockAllProducts = require('./mock/productModel/allProducts');
 const mockProductById = require('./mock/productModel/productById');
 const productsModel = require('../../../models/products');
+const { mockModel, mockParameter } = require('./mock/productModel/registerProduct');
 
 describe('products services tests', () => {
   describe('function getProducts without parameter', () => {
@@ -115,4 +116,31 @@ describe('products services tests', () => {
     });
   });
 
+  describe('function registerProduct', () => {
+    it('should return null', async () => {
+      sinon.stub(productsModel, 'getAllProducts').resolves(mockAllProducts);
+
+      const productAlreadyExists = {
+        name: 'Traje de encolhimento',
+        quantity: 20,
+      }
+
+      const result = await productsService.registerProduct(productAlreadyExists);
+
+      expect(result).to.be.null;
+
+      productsModel.getAllProducts.restore();
+    });
+
+    it('should return an object containing "id", name and quantity', async () => {
+      sinon.stub(productsModel, 'registerProduct').resolves(mockModel);
+
+      const result = await productsService.registerProduct(mockParameter);
+
+      expect(result).to.be.contains.keys('id', 'name', 'quantity');
+      expect(result).to.be.deep.equal(mockModel);
+
+      productsModel.registerProduct.restore();
+    });
+  });
 });
