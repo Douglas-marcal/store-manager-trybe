@@ -18,7 +18,16 @@ async function getSaleById(request, response) {
   response.status(CODE.OK).json(sale);
 }
 
+async function registerSale(request, response) {
+  const { body } = request;
+
+  const sale = await salesService.registerSale(body);
+
+  response.status(CODE.CREATED).json(sale);
+}
+
 module.exports = {
   getAllSales,
   getSaleById,
+  registerSale,
 };
