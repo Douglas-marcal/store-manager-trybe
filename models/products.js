@@ -14,7 +14,6 @@ async function registerProduct(product) {
   const QUERY = 'INSERT INTO products (name, quantity) VALUES (?, ?);';
 
   const [productAdded] = await database.execute(QUERY, [name, quantity]);
-  console.log(productAdded);
 
   const response = {
     id: productAdded.insertId,

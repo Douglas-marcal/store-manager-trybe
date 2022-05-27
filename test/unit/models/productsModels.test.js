@@ -1,9 +1,10 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
-const { getAllProducts, getProductById } = require('../../../models/products');
+const productsModel = require('../../../models/products');
 const database = require('../../../database');
 const mockAllProducts = require('./mock/productsDatabase/allProducts');
 const mockProductById = require('./mock/productsDatabase/productById');
+const mockDatabaseResponse = require('./mock/productsDatabase/registerProduct');
 
 describe('products model tests', () => {
   describe('function getAllProducts', () => {
@@ -15,30 +16,30 @@ describe('products model tests', () => {
     //   database.execute.restore();
     // });
 
-    it('returns an array', async () => {
+    it('should return an array', async () => {
       sinon.stub(database, 'execute').resolves(mockAllProducts);
 
-      const [products] = await getAllProducts();
+      const [products] = await productsModel.getAllProducts();
 
       expect(products).to.be.an('array');
 
       database.execute.restore();
     });
 
-    it('returns all products', async () => {
+    it('should return all products', async () => {
       sinon.stub(database, 'execute').resolves(mockAllProducts);
 
-      const [products] = await getAllProducts();
+      const [products] = await productsModel.getAllProducts();
 
       expect(products.length).to.be.equal(3);
 
       database.execute.restore();
     });
 
-    it('products has keys "id", "name", "quantity"', async () => {
+    it('should products has keys "id", "name", "quantity"', async () => {
       sinon.stub(database, 'execute').resolves(mockAllProducts);
 
-      const [products] = await getAllProducts();
+      const [products] = await productsModel.getAllProducts();
 
       products.forEach(product => {
         expect(product).to.contains.keys("id", "name", "quantity");
@@ -57,34 +58,60 @@ describe('products model tests', () => {
     //   database.execute.restore();
     // });
 
-    it('returns an array', async () => {
+    it('should return an array', async () => {
       sinon.stub(database, 'execute').resolves(mockProductById);
 
-      const [product] = await getProductById(3);
+      const [product] = await productsModel.getProductById(3);
 
       expect(product.length).to.be.equal(1);
 
       database.execute.restore();
     });
 
-    it('array contains an object', async () => {
+    it('should array contains an object', async () => {
       sinon.stub(database, 'execute').resolves(mockProductById);
 
-      const [product] = await getProductById(3);
+      const [product] = await productsModel.getProductById(3);
 
       expect(product[0]).to.be.an('object');
 
       database.execute.restore();
     });
 
-    it('object contains keys "id", "name", "quantity"', async () => {
+    it('should object contains keys "id", "name", "quantity"', async () => {
       sinon.stub(database, 'execute').resolves(mockProductById);
 
-      const [product] = await getProductById(3);
+      const [product] = await productsModel.getProductById(3);
 
       expect(product[0]).to.contains.keys("id", "name", "quantity");
 
       database.execute.restore();
+    });
+  });
+
+  describe('function registerProduct', () => {
+    beforeEach(() => {
+      sinon.stub(database, 'execute').resolves(mockDatabaseResponse);
+    });
+
+    afterEach(() => {
+      database.execute.restore();
+    });
+
+    it('should return an object', async () => {
+      const product = {
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      }
+
+      const result = await productsModel.registerProduct(product);
+
+      const responseDatabase = {
+        id: 4,
+        ...product,
+      };
+
+      expect(result).to.be.deep.equal(responseDatabase);
     });
   });
 });
