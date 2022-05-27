@@ -34,9 +34,18 @@ async function updateProduct(id, product) {
   return response.affectedRows;
 }
 
+async function deleteProduct(id) {
+  const QUERY = 'DELETE FROM products WHERE id = ?;';
+
+  const [response] = await database.execute(QUERY, [id]);
+
+  return response.affectedRows;
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   registerProduct,
   updateProduct,
+  deleteProduct,
 };
