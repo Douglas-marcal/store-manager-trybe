@@ -26,8 +26,19 @@ async function registerSale(request, response) {
   response.status(CODE.CREATED).json(sale);
 }
 
+async function updateSale(request, response) {
+  const { body, params: { id } } = request;
+
+  const saleItems = [...body];
+
+  const saleUpdated = await salesService.updateSale(id, saleItems);
+
+  response.status(CODE.OK).json(saleUpdated);
+}
+
 module.exports = {
   getAllSales,
   getSaleById,
   registerSale,
+  updateSale,
 };
