@@ -43,10 +43,8 @@ async function registerSale(products) {
   return response;
 }
 
-async function updateSale(saleItems) {
-  await salesProductsModel.updateSale(saleItems);
-
-  const { id } = saleItems;
+async function updateSale(id, saleItems) {
+  await salesProductsModel.updateSale(id, saleItems);
 
   const itemUpdated = saleItems.map(({ productId, quantity }) => ({ productId, quantity }));
   
