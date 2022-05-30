@@ -1,9 +1,10 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
-const { getAllSales, getSaleById } = require('../../../models/sales');
+const salesModel = require('../../../models/sales');
 const mockAllSales = require('./mock/salesDatabase/allSales');
 const mockSaleById = require('./mock/salesDatabase/saleById')
 const database = require('../../../database');
+const mockRegisterSale = require('./mock/salesDatabase/registerSale');
 
 describe('sales model tests', () => {
   describe('function getAllSales', () => {
@@ -18,7 +19,7 @@ describe('sales model tests', () => {
     it('returns an array', async () => {
       sinon.stub(database, 'execute').resolves(mockAllSales);
 
-      const [sales] = await getAllSales();
+      const [sales] = await salesModel.getAllSales();
 
       expect(sales).to.be.an('array');
 
@@ -28,7 +29,7 @@ describe('sales model tests', () => {
     it('returns all sales', async () => {
       sinon.stub(database, 'execute').resolves(mockAllSales);
 
-      const [sales] = await getAllSales();
+      const [sales] = await salesModel.getAllSales();
 
       expect(sales.length).to.be.equal(3);
 
@@ -38,7 +39,7 @@ describe('sales model tests', () => {
     it('sales has keys "sale_id", "date", "product_id", "quantity"', async () => {
       sinon.stub(database, 'execute').resolves(mockAllSales);
 
-      const [sales] = await getAllSales();
+      const [sales] = await salesModel.getAllSales();
 
       sales.forEach((sale) => {
         expect(sale).to.contains.keys('sale_id', 'date', 'product_id', 'quantity');
@@ -60,7 +61,7 @@ describe('sales model tests', () => {
     it('returns an array', async () => {
       sinon.stub(database, 'execute').resolves(mockSaleById);
 
-      const [sale] = await getSaleById(1);
+      const [sale] = await salesModel.getSaleById(1);
 
       expect(sale.length).to.be.equal(2);
 
@@ -70,7 +71,7 @@ describe('sales model tests', () => {
     it('array contains an object', async () => {
       sinon.stub(database, 'execute').resolves(mockSaleById);
 
-      const [sale] = await getSaleById(1);
+      const [sale] = await salesModel.getSaleById(1);
 
       expect(sale[0]).to.be.an('object');
 
@@ -80,11 +81,23 @@ describe('sales model tests', () => {
     it('object contains keys "date", "product_id", "quantity"', async () => {
       sinon.stub(database, 'execute').resolves(mockSaleById);
 
-      const [sale] = await getSaleById(1);
+      const [sale] = await salesModel.getSaleById(1);
 
       sale.forEach((product) => {
         expect(product).to.contains.keys('date', 'product_id', 'quantity');
       });
+
+      database.execute.restore();
+    });
+  });
+
+  describe('function registerSale', () => {
+    it('should return a promise', async () => {
+      sinon.stub(database, 'execute').resolves(mockRegisterSale)
+
+      const [result] = await salesModel.registerSale();
+
+      expect(result).to.be.contains.keys('affectedRows', 'insertId');
 
       database.execute.restore();
     });
