@@ -10,6 +10,17 @@ async function registerSalesProducts(sale) {
   return { ...sale };
 }
 
+async function updateSale(saleItems) {
+  const { id, productId, quantity } = saleItems;
+
+  const QUERY = 'UPDATE sales_products SET product_id = ?, quantity = ? WHERE sale_id = ?;';
+
+  const { affectedRows } = await database.execute(QUERY, [productId, quantity, id]);
+
+  return affectedRows;
+}
+
 module.exports = {
   registerSalesProducts,
+  updateSale,
 };
