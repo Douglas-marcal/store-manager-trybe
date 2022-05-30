@@ -10,14 +10,18 @@ async function registerSalesProducts(sale) {
   return { ...sale };
 }
 
-async function updateSale(saleItems) {
-  const { id, productId, quantity } = saleItems;
+async function updateSale(id, saleItems) {
+  saleItems.forEach(async (item) => {
+    const { productId, quantity } = item;
 
-  const QUERY = 'UPDATE sales_products SET product_id = ?, quantity = ? WHERE sale_id = ?;';
+    const UPDATE = 'UPDATE sales_products ';
+    const SET = 'SET product_id = ?, quantity = ? ';
+    const WHERE = 'WHERE sale_id = ? AND product_id = ?;';
 
-  const { affectedRows } = await database.execute(QUERY, [productId, quantity, id]);
+    const QUERY = UPDATE + SET + WHERE;
 
-  return affectedRows;
+    await database.execute(QUERY, [productId, quantity, id, productId]);
+  });
 }
 
 module.exports = {
