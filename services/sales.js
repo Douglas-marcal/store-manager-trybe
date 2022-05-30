@@ -43,4 +43,8 @@ async function registerSale(products) {
   return response;
 }
 
-module.exports = { getSales, registerSale };
+function updateSale(saleItems) {
+  return salesProductsModel.updateSale(saleItems);
+}
+
+module.exports = { getSales, registerSale, updateSale };
