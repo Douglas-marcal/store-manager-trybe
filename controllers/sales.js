@@ -36,9 +36,20 @@ async function updateSale(request, response) {
   response.status(CODE.OK).json(saleUpdated);
 }
 
+async function deleteSale(request, response) {
+  const { id } = request.params;
+
+  const saleDeleted = await salesService.deleteSale(id);
+
+  if (!saleDeleted) return response.status(CODE.NOT_FOUND).json(MESSAGE.SALE_NOT_FOUND);
+
+  response.status(CODE.NO_CONTENT).end();
+}
+
 module.exports = {
   getAllSales,
   getSaleById,
   registerSale,
   updateSale,
+  deleteSale,
 };
