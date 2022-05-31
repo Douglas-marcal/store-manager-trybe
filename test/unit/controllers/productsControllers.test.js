@@ -282,4 +282,66 @@ describe('products controller tests', () => {
       expect(result).to.be.true;
     });
   });
+
+  describe('function deleteProduct', () => {
+    const response = {};
+    const request = {};
+
+    beforeEach(() => {
+      response.status = sinon.stub().returns(response);
+      response.end = sinon.stub().returns();
+      sinon.stub(productsService, 'deleteProduct').resolves(1);
+    });
+    
+    afterEach(() => {
+      productsService.deleteProduct.restore();
+    });
+
+    it('should return status 204', async () => {
+      request.params = { id: 1 };
+
+      await productsController.deleteProduct(request, response);
+
+      const result = response.status.calledWith(204);
+
+      expect(result).to.be.true;
+    });
+  });
+
+  describe('function deleteProduct: case not deleted', () => {
+    const response = {};
+    const request = {};
+
+    beforeEach(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+      sinon.stub(productsService, 'deleteProduct').resolves(0);
+    });
+    
+    afterEach(() => {
+      productsService.deleteProduct.restore();
+    });
+
+    it('should return status 404', async () => {
+      request.params = { id: 404 };
+
+      await productsController.deleteProduct(request, response);
+
+      const result = response.status.calledWith(404);
+
+      expect(result).to.be.true;
+    });
+
+    it('should return json with message', async () => {
+      request.params = { id: 404 };
+
+      const message = { message: 'Product not found' };
+
+      await productsController.deleteProduct(request, response);
+
+      const result = response.json.calledWith(message);
+
+      expect(result).to.be.true;
+    });
+  });
 });
