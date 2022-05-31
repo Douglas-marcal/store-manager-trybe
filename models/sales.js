@@ -25,8 +25,15 @@ function registerSale() {
   return database.execute(QUERY);
 }
 
+function deleteSale(id) {
+  const QUERY = 'DELETE FROM sales WHERE id = ?';
+
+  return database.execute(QUERY, [id]);
+}
+
 module.exports = {
   getAllSales,
   getSaleById,
   registerSale,
+  deleteSale,
 };
