@@ -177,4 +177,28 @@ describe('products services tests', () => {
       productsModel.updateProduct.restore();
     });
   });
+  
+  describe('function deleteProduct', () => {
+    it('should return a number different than 0', async () => {
+
+      sinon.stub(productsModel, 'deleteProduct').resolves(1);
+      
+      const result = await productsService.deleteProduct(2);
+
+      expect(result).to.be.equal(1);
+      
+      productsModel.deleteProduct.restore();
+    });
+
+    it('should return 0 if "id" does\'nt exist', async () => {
+
+      sinon.stub(productsModel, 'deleteProduct').resolves(0);
+      
+      const result = await productsService.deleteProduct(7777);
+
+      expect(result).to.be.equal(0);
+      
+      productsModel.deleteProduct.restore();
+    });
+  });
 });
