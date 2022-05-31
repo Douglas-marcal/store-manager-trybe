@@ -6,6 +6,7 @@ const salesModel = require('../../../models/sales');
 const salesService = require('../../../services/sales');
 const salesProductsModel = require('../../../models/salesProducts');
 const mockResponseDatabaseRegistered = require('./mock/salesModel/registerSale');
+const mockUpdateSale = require('./mock/salesModel/updateSale');
 
 describe('sales services tests', () => {
   describe('function getSales without parameter', () => {
@@ -144,5 +145,29 @@ describe('sales services tests', () => {
 
     expect(result).to.be.deep.equal(response)
     })
+  });
+
+  describe('function updateSale', () => {
+    beforeEach(() => {
+      sinon.stub(salesProductsModel, 'updateSale').resolves(mockUpdateSale);
+    });
+
+    afterEach(() => {
+      salesProductsModel.updateSale.restore();
+    });
+
+    it('should return an object with keys "saleId" and "itemUpdated"', async () => {
+      const saleItems = [
+        {
+          "productId": 1,
+          "quantity": 30
+        }
+      ]
+
+      const result = await salesService.updateSale(1, saleItems);
+
+      expect(result).to.be.an('object');
+      expect(result).to.be.contains.keys('saleId', 'itemUpdated');
+    });
   });
 });
