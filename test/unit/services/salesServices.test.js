@@ -4,6 +4,8 @@ const mockAllSales = require('./mock/salesModel/allSales');
 const mockSaleById = require('./mock/salesModel/saleById');
 const salesModel = require('../../../models/sales');
 const salesService = require('../../../services/sales');
+const salesProductsModel = require('../../../models/salesProducts');
+const mockResponseDatabaseRegistered = require('./mock/salesModel/registerSale');
 
 describe('sales services tests', () => {
   describe('function getSales without parameter', () => {
@@ -107,4 +109,40 @@ describe('sales services tests', () => {
     });
   });
 
+  describe('function registerSale', () => {
+    const mockModelRegisterSalesProducts = { id: 3, productId: 1, quantity: 2 };
+    beforeEach(() => {
+      sinon.stub(salesModel, 'registerSale').resolves(mockResponseDatabaseRegistered);
+      sinon.stub(salesProductsModel, 'registerSalesProducts')
+        .resolves(mockModelRegisterSalesProducts);
+    });
+
+    afterEach(() => {
+      salesModel.registerSale.restore();
+      salesProductsModel.registerSalesProducts.restore();
+    });
+
+    it('should return correct response', async () => {
+      const product = [
+        {
+          "productId": 1,
+          "quantity": 2
+        }
+    ];
+
+      const result = await salesService.registerSale(product);
+
+    const response = {
+      id: 3,
+      itemsSold: [
+        {
+          productId: 1,
+          quantity: 2
+        }
+      ]
+    }
+
+    expect(result).to.be.deep.equal(response)
+    })
+  });
 });
