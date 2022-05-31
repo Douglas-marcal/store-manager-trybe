@@ -145,4 +145,36 @@ describe('products services tests', () => {
       productsModel.getAllProducts.restore();
     });
   });
+
+  describe('function updateProduct', () => {
+    it('should return a number different than 0', async () => {
+      sinon.stub(productsModel, 'updateProduct').resolves(2);
+
+      const product = {
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      };
+
+      const result = await productsService.updateProduct(1, product);
+
+      expect(result).to.be.equal(2);
+
+      productsModel.updateProduct.restore();
+    });
+
+    it('should return 0 if "id" does\'nt exist', async () => {
+      sinon.stub(productsModel, 'updateProduct').resolves(0);
+
+      const product = {
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      };
+
+      const result = await productsService.updateProduct(7777, product);
+
+      expect(result).to.be.equal(0);
+
+      productsModel.updateProduct.restore();
+    });
+  });
 });
