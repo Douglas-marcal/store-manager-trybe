@@ -25,10 +25,12 @@ function registerSale() {
   return database.execute(QUERY);
 }
 
-function deleteSale(id) {
+async function deleteSale(id) {
   const QUERY = 'DELETE FROM sales WHERE id = ?';
 
-  return database.execute(QUERY, [id]);
+  const [response] = await database.execute(QUERY, [id]);
+
+  return response.affectedRows;
 }
 
 module.exports = {
