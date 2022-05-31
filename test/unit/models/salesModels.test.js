@@ -1,10 +1,12 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
 const salesModel = require('../../../models/sales');
+const salesProductsModel = require('../../../models/salesProducts');
 const mockAllSales = require('./mock/salesDatabase/allSales');
 const mockSaleById = require('./mock/salesDatabase/saleById')
 const database = require('../../../database');
 const mockRegisterSale = require('./mock/salesDatabase/registerSale');
+const mockResponseUpdateSale = require('./mock/salesProductsDatabase/updateSale');
 
 describe('sales model tests', () => {
   describe('function getAllSales', () => {
@@ -100,6 +102,89 @@ describe('sales model tests', () => {
       expect(result).to.be.contains.keys('affectedRows', 'insertId');
 
       database.execute.restore();
+    });
+  });
+
+  describe('function registerSalesProducts', () => {
+    beforeEach(() => {
+      sinon.stub(database, 'execute').resolves()
+    });
+
+    afterEach(() => {
+      database.execute.restore();
+    });
+
+    it('should return an object', async () => {
+      const sale = {
+        id: 4,
+        productId: 1,
+        quantity: 30,
+      };
+
+      const result = await salesProductsModel.registerSalesProducts(sale);
+
+      expect(result).to.be.an('object');
+    });
+
+    it('should return keys "id", "productId", "quantity"', async () => {
+      const sale = {
+        id: 4,
+        productId: 1,
+        quantity: 30,
+      };
+
+      const result = await salesProductsModel.registerSalesProducts(sale);
+
+      expect(result).to.be.contains.keys('id', 'productId', 'quantity');
+    });
+  });
+
+  describe('function updateSale', () => {
+    beforeEach(() => {
+      sinon.stub(database, 'execute').resolves(mockResponseUpdateSale);
+    });
+
+    afterEach(() => {
+      database.execute.restore();
+    });
+
+    it('should return an array', async () => {
+      const saleItems = [
+        {
+          "productId": 1,
+          "quantity": 30
+        }
+      ]
+
+      const result = await salesProductsModel.updateSale(1, saleItems);
+
+      expect(result).to.be.an('array');
+    });
+
+    it('should first position array contains an object', async () => {
+      const saleItems = [
+        {
+          "productId": 1,
+          "quantity": 30
+        }
+      ]
+
+      const [result] = await salesProductsModel.updateSale(1, saleItems);
+
+      expect(result).to.be.an('object');
+    });
+
+    it('should object contain key "affectedRows"', async () => {
+      const saleItems = [
+        {
+          "productId": 1,
+          "quantity": 30
+        }
+      ]
+
+      const [result] = await salesProductsModel.updateSale(1, saleItems);
+
+      expect(result).to.be.contain.keys('affectedRows');
     });
   });
 });
