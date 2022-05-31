@@ -184,4 +184,102 @@ describe('products controller tests', () => {
       expect(result).to.be.true;
     });
   });
+
+  describe('function updateProduct', () => {
+    const response = {};
+    const request = {};
+
+    beforeEach(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+      sinon.stub(productsService, 'updateProduct').resolves(2);
+    });
+    
+    afterEach(() => {
+      productsService.updateProduct.restore();
+    });
+
+    it('should return status 200', async () => {
+      request.body = {
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      };
+
+      request.params = { id: 1 };
+
+      await productsController.updateProduct(request, response);
+
+      const result = response.status.calledWith(200);
+
+      expect(result).to.be.true;
+    });
+
+    it('should return json with an object', async () => {
+      request.body = {
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      };
+
+      request.params = { id: 1 };
+
+      const message = {
+        id: 1,
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      };
+
+      await productsController.updateProduct(request, response);
+
+      const result = response.json.calledWith(message);
+
+      expect(result).to.be.true;
+    });
+  });
+
+  describe('function updateProduct: case not updated', () => {
+    const response = {};
+    const request = {};
+
+    beforeEach(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+      sinon.stub(productsService, 'updateProduct').resolves(0);
+    });
+    
+    afterEach(() => {
+      productsService.updateProduct.restore();
+    });
+
+    it('should return status 404', async () => {
+      request.body = {
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      };
+
+      request.params = { id: 404 };
+
+      await productsController.updateProduct(request, response);
+
+      const result = response.status.calledWith(404);
+
+      expect(result).to.be.true;
+    });
+
+    it('should return json with message', async () => {
+      request.body = {
+        name: 'Chinelo Havaianas',
+        quantity: 30,
+      };
+
+      request.params = { id: 404 };
+
+      const message = { message: 'Product not found' };
+
+      await productsController.updateProduct(request, response);
+
+      const result = response.json.calledWith(message);
+
+      expect(result).to.be.true;
+    });
+  });
 });
