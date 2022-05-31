@@ -53,4 +53,8 @@ async function updateSale(id, saleItems) {
   return response;
 }
 
-module.exports = { getSales, registerSale, updateSale };
+function deleteSale(id) {
+  return salesModel.deleteSale(id);
+}
+
+module.exports = { getSales, registerSale, updateSale, deleteSale };
