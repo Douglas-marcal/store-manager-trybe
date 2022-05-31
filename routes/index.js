@@ -17,6 +17,7 @@ routes.get('/sales', salesController.getAllSales);
 routes.get('/sales/:id', salesController.getSaleById);
 routes.post('/sales', validateSale, salesController.registerSale);
 routes.put('/sales/:id', validateSale, salesController.updateSale);
+routes.delete('/sales/:id', salesController.deleteSale);
 
 routes.use(errorHandling);
 
