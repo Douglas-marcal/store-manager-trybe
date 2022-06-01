@@ -7,6 +7,7 @@ const salesService = require('../../../services/sales');
 const salesProductsModel = require('../../../models/salesProducts');
 const mockResponseDatabaseRegistered = require('./mock/salesModel/registerSale');
 const mockUpdateSale = require('./mock/salesModel/updateSale');
+const productsService = require('../../../services/products')
 
 describe('sales services tests', () => {
   describe('function getSales without parameter', () => {
@@ -116,6 +117,9 @@ describe('sales services tests', () => {
       sinon.stub(salesModel, 'registerSale').resolves(mockResponseDatabaseRegistered);
       sinon.stub(salesProductsModel, 'registerSalesProducts')
         .resolves(mockModelRegisterSalesProducts);
+      sinon.stub(productsService, 'getProducts')
+        .resolves([[{ name: 'Chinelo Havaianas', quantity: 30 }]]);
+      sinon.stub(productsService, 'updateProduct').resolves();
     });
 
     afterEach(() => {
