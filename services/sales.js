@@ -36,7 +36,11 @@ async function registerSale(products) {
 
   const productsRegistered = await Promise.all(insertedSales);
 
-  products.forEach(updateQuantityProducts);
+  const checkAvailability = products.map(updateQuantityProducts);
+
+  const unavailableProducts = await Promise.all(checkAvailability);
+
+  if (unavailableProducts.includes(null)) return null;
 
   const { id } = productsRegistered[0];
   const itemsSold = productsRegistered.map(({ productId, quantity }) => ({ productId, quantity }));

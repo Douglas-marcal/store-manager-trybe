@@ -23,6 +23,8 @@ async function registerSale(request, response) {
 
   const sale = await salesService.registerSale(body);
 
+  if (!sale) return response.status(CODE.UNPROCESSABLE_ENTITY).json(MESSAGE.OUT_OF_STOCK);
+
   response.status(CODE.CREATED).json(sale);
 }
 

@@ -33,6 +33,10 @@ const MESSAGE = {
     status: CODE.BAD_REQUEST,
     message: '"productId" is required',
   },
+  OUT_OF_STOCK: {
+    status: CODE.UNPROCESSABLE_ENTITY,
+    message: 'Such amount is not permitted to sell',
+  },
 };
 
 const MESSAGE_NOT_FOUND = {
