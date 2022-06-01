@@ -59,7 +59,11 @@ async function updateSale(id, saleItems) {
   return response;
 }
 
-function deleteSale(id) {
+async function deleteSale(id) {
+  const [sales] = await salesProductsModel.getSalesToDelete(id);
+
+  sales.forEach(updateQuantityProducts);
+
   return salesModel.deleteSale(id);
 }
 

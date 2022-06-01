@@ -25,10 +25,15 @@ function saleByIdToCamelCase(sale) {
   return salesCamelCase;
 }
 
-async function updateQuantityProducts({ productId, quantity }) {
+async function updateQuantityProducts(saleItem) {
+  const productId = saleItem.productId || saleItem.product_id;
+  const { quantity } = saleItem;
+
+  const operator = (saleItem.productId) ? -1 : 1;
+
   const [[product]] = await productsService.getProducts(productId);
 
-  const newQuantity = product.quantity - quantity;
+  const newQuantity = product.quantity + (quantity * operator);
 
   const productUpdated = {
     name: product.name,

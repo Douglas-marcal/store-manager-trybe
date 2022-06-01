@@ -1,5 +1,11 @@
 const database = require('../database');
 
+function getSalesToDelete(id) {
+  const QUERY = 'SELECT product_id, quantity FROM sales_products WHERE sale_id = ?;';
+
+  return database.execute(QUERY, [id]);
+}
+
 async function registerSalesProducts(sale) {
   const { id, productId, quantity } = sale;
 
@@ -27,4 +33,5 @@ function updateSale(id, saleItems) {
 module.exports = {
   registerSalesProducts,
   updateSale,
+  getSalesToDelete,
 };
