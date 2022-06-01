@@ -25,7 +25,7 @@ function saleByIdToCamelCase(sale) {
   return salesCamelCase;
 }
 
-async function updateQuantity({ productId, quantity }) {
+async function updateQuantityProducts({ productId, quantity }) {
   const [[product]] = await productsService.getProducts(productId);
 
   const newQuantity = product.quantity - quantity;
@@ -41,5 +41,5 @@ async function updateQuantity({ productId, quantity }) {
 module.exports = {
   allSalesToCamelCase,
   saleByIdToCamelCase,
-  updateQuantity,
+  updateQuantityProducts,
 };
