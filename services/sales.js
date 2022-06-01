@@ -1,6 +1,10 @@
 const salesModel = require('../models/sales');
 const salesProductsModel = require('../models/salesProducts');
-const { allSalesToCamelCase, saleByIdToCamelCase } = require('./utils/salesUtils');
+const {
+  allSalesToCamelCase,
+  saleByIdToCamelCase,
+  updateQuantityProducts,
+} = require('./utils/salesUtils');
 
 async function getSales(id = null) {
   if (id) {
@@ -31,6 +35,8 @@ async function registerSale(products) {
   }, []);
 
   const productsRegistered = await Promise.all(insertedSales);
+
+  products.forEach(updateQuantityProducts);
 
   const { id } = productsRegistered[0];
   const itemsSold = productsRegistered.map(({ productId, quantity }) => ({ productId, quantity }));
